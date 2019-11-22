@@ -91,7 +91,7 @@ export class AppComponent  implements OnInit{
       ctx.fillStyle = '#000000';
       ctx.fillText(prediction.class, x, y);
       if (prediction.class == 'person') {
-        ctx.fillText('kkkk', 1, 1);
+        ctx.fillText('有人阿!!!', 1, 1);
       }
     });
   }
