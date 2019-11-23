@@ -28,6 +28,8 @@ export class AppComponent  implements OnInit{
     this.subs.unsubscribe();
   }
 
+  // https://itnext.io/how-to-deploy-angular-application-to-heroku-1d56e09c5147
+
   // run相機
   webcam_init() {
     this.video = document.getElementById('vid') as HTMLVideoElement;
@@ -81,7 +83,7 @@ export class AppComponent  implements OnInit{
       ctx.fillStyle = '#00FFFF';
       const textWidth = ctx.measureText(prediction.class).width;
       const textHeight = parseInt(font, 10); // base 10
-      ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
+      ctx.fillRect(x * 0.8, y * 0.6, textWidth + 4, textHeight + 4);
     });
 
     // 畫上標籤
