@@ -1,3 +1,4 @@
+/// <reference types="webrtc" />
 import { Component, OnInit } from '@angular/core';
 import * as cocoSSD from '@tensorflow-models/coco-ssd';
 import { from, animationFrameScheduler, timer, defer } from 'rxjs';
@@ -52,7 +53,6 @@ export class AppComponent  implements OnInit{
         };
       });
     }
-
 
     // WebKit-prefiexed
     if (navigator.webkitGetUserMedia){
