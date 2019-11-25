@@ -69,7 +69,7 @@ export class AppComponent  implements OnInit{
           this.video.play();
           this.init_cocossd_obj_prediction();
         }},
-        ()  /**  error callback **/ => {});
+        (error)  /**  error callback **/ => alert(JSON.stringify(error)));
     }
 
   }
