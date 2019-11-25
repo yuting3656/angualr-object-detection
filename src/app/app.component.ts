@@ -33,6 +33,9 @@ export class AppComponent  implements OnInit{
   // run相機
   webcam_init() {
     this.video = document.getElementById('vid') as HTMLVideoElement;
+
+    // Standard
+    if (navigator.getUserMedia) {
       navigator.mediaDevices
       .getUserMedia({
         audio: false,
@@ -48,6 +51,27 @@ export class AppComponent  implements OnInit{
           this.init_cocossd_obj_prediction();
         };
       });
+    }
+
+
+    // WebKit-prefiexed
+    if (navigator.webkitGetUserMedia){
+      navigator.webkitGetUserMedia({
+        audio: false,
+        video: {
+            // environment 手機可以
+            facingMode: 'environment',
+          }},
+        // success callback
+        (stream) => {
+        this.video.srcObject = stream;
+        this.video.onloadedmetadata = () => {
+          this.video.play();
+          this.init_cocossd_obj_prediction();
+        }},
+        ()  /**  error callback **/ => {});
+    }
+
   }
 
   // 預測完畫進去圖案上
@@ -78,7 +102,8 @@ export class AppComponent  implements OnInit{
       // 畫上框框
       ctx.strokeStyle = '#00FFFF';
       ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, width, height);
+      ctx.strokeRect(
+        x, y, width, height);
       // 畫上背景
       ctx.fillStyle = '#00FFFF';
       const textWidth = ctx.measureText(prediction.class).width;
