@@ -1,4 +1,4 @@
-/// <reference types="webrtc" />
+// <reference types="webrtc" />
 import { Component, OnInit } from '@angular/core';
 import * as cocoSSD from '@tensorflow-models/coco-ssd';
 import { from, animationFrameScheduler, timer, defer } from 'rxjs';
@@ -36,41 +36,41 @@ export class AppComponent  implements OnInit{
     this.video = document.getElementById('vid') as HTMLVideoElement;
 
     // Standard
-    // if (navigator.getUserMedia) {
-    //   navigator.mediaDevices
-    //   .getUserMedia({
-    //     audio: false,
-    //     video: {
-    //       // environment 手機可以
-    //       facingMode: 'environment',
-    //     }
-    //   })
-    //   .then(stream => {
-    //     this.video.srcObject = stream;
-    //     this.video.onloadedmetadata = () => {
-    //       this.video.play();
-    //       this.init_cocossd_obj_prediction();
-    //     };
-    //   });
-    // }
-
-    // WebKit-prefiexed
-    if (navigator.webkitGetUserMedia){
-      navigator.webkitGetUserMedia({
+      navigator.mediaDevices
+      .getUserMedia({
         audio: false,
         video: {
-            // environment 手機可以
-            facingMode: 'environment',
-          }},
-        // success callback
-        (stream) => {
+          // environment 手機可以
+          facingMode: 'environment',
+          width: window.innerWidth * 0.8 ,
+          height: window.innerWidth * 0.6
+        }
+      })
+      .then(stream => {
         this.video.srcObject = stream;
         this.video.onloadedmetadata = () => {
           this.video.play();
           this.init_cocossd_obj_prediction();
-        }},
-        (error)  /**  error callback **/ => alert(JSON.stringify(error)));
-    }
+        };
+      });
+
+    // WebKit-prefiexed
+    // if (navigator.webkitGetUserMedia){
+    //   navigator.webkitGetUserMedia({
+    //     audio: false,
+    //     video: {
+    //         // environment 手機可以
+    //         facingMode: 'environment',
+    //       }},
+    //     // success callback
+    //     (stream) => {
+    //     this.video.srcObject = stream;
+    //     this.video.onloadedmetadata = () => {
+    //       this.video.play();
+    //       this.init_cocossd_obj_prediction();
+    //     }},
+    //     (error)  /**  error callback **/ => alert(JSON.stringify(error)));
+    // }
 
   }
 
