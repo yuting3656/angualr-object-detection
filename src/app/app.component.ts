@@ -42,8 +42,8 @@ export class AppComponent  implements OnInit{
         video: {
           // environment 手機可以
           facingMode: 'environment',
-          width: window.innerWidth * 0.8 ,
-          height: window.innerWidth * 0.6
+          width: {ideal: window.innerWidth * 0.8 },
+          height:{ideal: window.innerWidth * 0.6}
         }
       })
       .then(stream => {
@@ -52,7 +52,7 @@ export class AppComponent  implements OnInit{
           this.video.play();
           this.init_cocossd_obj_prediction();
         };
-      });
+      } , (error) => alert(JSON.stringify(error)));
 
     // WebKit-prefiexed
     // if (navigator.webkitGetUserMedia){
