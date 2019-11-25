@@ -36,23 +36,23 @@ export class AppComponent  implements OnInit{
     this.video = document.getElementById('vid') as HTMLVideoElement;
 
     // Standard
-    if (navigator.getUserMedia) {
-      navigator.mediaDevices
-      .getUserMedia({
-        audio: false,
-        video: {
-          // environment 手機可以
-          facingMode: 'environment',
-        }
-      })
-      .then(stream => {
-        this.video.srcObject = stream;
-        this.video.onloadedmetadata = () => {
-          this.video.play();
-          this.init_cocossd_obj_prediction();
-        };
-      });
-    }
+    // if (navigator.getUserMedia) {
+    //   navigator.mediaDevices
+    //   .getUserMedia({
+    //     audio: false,
+    //     video: {
+    //       // environment 手機可以
+    //       facingMode: 'environment',
+    //     }
+    //   })
+    //   .then(stream => {
+    //     this.video.srcObject = stream;
+    //     this.video.onloadedmetadata = () => {
+    //       this.video.play();
+    //       this.init_cocossd_obj_prediction();
+    //     };
+    //   });
+    // }
 
     // WebKit-prefiexed
     if (navigator.webkitGetUserMedia){
