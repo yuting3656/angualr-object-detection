@@ -43,7 +43,7 @@ export class AppComponent  implements OnInit{
           // environment 手機可以
           facingMode: 'environment',
           width: window.innerWidth,
-          height:window.innerHeight
+          height: window.innerHeight
         }
       })
       .then(stream => {
@@ -139,7 +139,6 @@ export class AppComponent  implements OnInit{
     from(cocoSSD.load({ base: 'lite_mobilenet_v2' })).pipe(
       // 預測
       concatMap(model => action$(model)),
-      // tap(() => this.webcam_init()),
       tap(() => this.showspinner = false),
       // repeat(),
     ).subscribe(()=> {}, (error)=>{
