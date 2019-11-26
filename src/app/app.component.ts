@@ -42,8 +42,8 @@ export class AppComponent  implements OnInit{
         video: {
           // environment 手機可以
           facingMode: 'environment',
-          width: {ideal: window.innerWidth * 0.8 },
-          height:{ideal: window.innerHeight * 0.6}
+          width: window.innerWidth * 0.8 ,
+          height:window.innerHeight * 0.6
         }
       })
       .then(stream => {
