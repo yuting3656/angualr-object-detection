@@ -42,8 +42,8 @@ export class AppComponent  implements OnInit{
         video: {
           // environment 手機可以
           facingMode: 'environment',
-          width: window.innerWidth * 0.8 ,
-          height:window.innerHeight * 0.6
+          width: window.innerWidth,
+          height:window.innerHeight
         }
       })
       .then(stream => {
@@ -82,8 +82,8 @@ export class AppComponent  implements OnInit{
     const ctx = canvas.getContext('2d');
 
     // 設定寬高
-    canvas.width = window.innerWidth * 0.8 ; //800;
-    canvas.height =  window.innerHeight  * 0.6 //600;
+    canvas.width = window.innerWidth; //800;
+    canvas.height =  window.innerHeight;//600;
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
