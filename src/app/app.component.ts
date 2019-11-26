@@ -82,8 +82,8 @@ export class AppComponent  implements OnInit{
     const ctx = canvas.getContext('2d');
 
     // 設定寬高
-    canvas.width = window.innerWidth; //800;
-    canvas.height =  window.innerHeight;//600;
+    canvas.width =  640;//window.innerWidth; //800;
+    canvas.height = 480;// window.innerHeight;//600;
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
