@@ -10,7 +10,7 @@ import { SubSink } from 'subsink';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  implements OnInit{
+export class AppComponent implements OnInit {
   title = 'angular-object-detection';
 
   private subs = new SubSink();
@@ -29,21 +29,17 @@ export class AppComponent  implements OnInit{
     this.subs.unsubscribe();
   }
 
-  // https://itnext.io/how-to-deploy-angular-application-to-heroku-1d56e09c5147
-
   // run相機
   webcam_init() {
     this.video = document.getElementById('vid') as HTMLVideoElement;
 
     // Standard
-      navigator.mediaDevices
+    navigator.mediaDevices
       .getUserMedia({
         audio: false,
         video: {
           // environment 手機可以
           facingMode: 'environment',
-          width: window.innerWidth,
-          height: window.innerHeight
         }
       })
       .then(stream => {
@@ -52,25 +48,7 @@ export class AppComponent  implements OnInit{
           this.video.play();
           this.init_cocossd_obj_prediction();
         };
-      }).catch((error) => {alert(JSON.stringify(error))});
-
-    // WebKit-prefiexed
-    // if (navigator.webkitGetUserMedia){
-    //   navigator.webkitGetUserMedia({
-    //     audio: false,
-    //     video: {
-    //         // environment 手機可以
-    //         facingMode: 'environment',
-    //       }},
-    //     // success callback
-    //     (stream) => {
-    //     this.video.srcObject = stream;
-    //     this.video.onloadedmetadata = () => {
-    //       this.video.play();
-    //       this.init_cocossd_obj_prediction();
-    //     }},
-    //     (error)  /**  error callback **/ => alert(JSON.stringify(error)));
-    // }
+      }).catch((error) => { alert(JSON.stringify(error)) });
 
   }
 
@@ -82,7 +60,8 @@ export class AppComponent  implements OnInit{
     const ctx = canvas.getContext('2d');
 
     // 設定寬高
-    canvas.width =  640;//window.innerWidth; //800;
+    // 這邊會設定這 size 是因為我的 usb 相機 default 抓圖就是這 size
+    canvas.width = 640;//window.innerWidth; //800;
     canvas.height = 480;// window.innerHeight;//600;
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -126,26 +105,26 @@ export class AppComponent  implements OnInit{
   // 把讀取檔案的 cocssd code 抽出來
   init_cocossd_obj_prediction() {
     const action$ = (model: cocoSSD.ObjectDetection) =>
-    defer(() => model.detect(this.video)).pipe(
-      observeOn(animationFrameScheduler),
-      tap((predictions) => this.renderPredictions(predictions)),
-      takeUntil(timer(5000)),
-      repeat()
-    );
-
-  // 訂閱Observeable
-  this.subs.add(
-    // 下載模型
-    from(cocoSSD.load({ base: 'lite_mobilenet_v2' })).pipe(
-      // 預測
-      concatMap(model => action$(model)),
-      tap(() => this.showspinner = false),
-      // repeat(),
-    ).subscribe(()=> {}, (error)=>{
-      console.log('出包搂 相機GG');
-      console.log(error);
-      // this.webcam_init();
-      })
+      defer(() => model.detect(this.video)).pipe(
+        observeOn(animationFrameScheduler),
+        tap((predictions) => this.renderPredictions(predictions)),
+        takeUntil(timer(5000)),
+        repeat()
       );
+
+    // 訂閱Observeable
+    this.subs.add(
+      // 下載模型
+      from(cocoSSD.load({ base: 'lite_mobilenet_v2' })).pipe(
+        // 預測
+        concatMap(model => action$(model)),
+        tap(() => this.showspinner = false),
+        // repeat(),
+      ).subscribe(() => { }, (error) => {
+        console.log('出包搂 相機GG');
+        console.log(error);
+        // this.webcam_init();
+      })
+    );
   }
 }
