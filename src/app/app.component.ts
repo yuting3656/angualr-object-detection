@@ -1,25 +1,36 @@
 // <reference types="webrtc" />
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as cocoSSD from '@tensorflow-models/coco-ssd';
 import { from, animationFrameScheduler, timer, defer } from 'rxjs';
 import { concatMap, tap, repeat, takeUntil, observeOn } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+
+// text to speech
+import Speech from 'speak-tts';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'angular-object-detection';
+
+  // test to speech
+  // https://usefulangle.com/post/98/javascript-text-to-speech
+  // https://www.npmjs.com/package/speak-tts
 
   private subs = new SubSink();
   // 設定Webcam
   video: HTMLVideoElement;
   // yuting spinner
   showspinner = true;
+  // speech
+  speech: any;
 
-  constructor() { }
+  constructor() {
+    this.initSpeech();
+  }
 
   ngOnInit() {
     this.webcam_init();
@@ -49,7 +60,6 @@ export class AppComponent implements OnInit {
           this.init_cocossd_obj_prediction();
         };
       }).catch((error) => { alert(JSON.stringify(error)) });
-
   }
 
   // 預測完畫進去圖案上
@@ -98,6 +108,13 @@ export class AppComponent implements OnInit {
       ctx.fillText(prediction.class, x, y);
       if (prediction.class == 'person') {
         ctx.fillText('有人阿!!!', 1, 1);
+
+        this.speech.speak(
+          {
+            text: '哈樓 阿爸',
+            queue: false
+          }
+        )
       }
     });
   }
@@ -108,8 +125,8 @@ export class AppComponent implements OnInit {
       defer(() => model.detect(this.video)).pipe(
         observeOn(animationFrameScheduler),
         tap((predictions) => this.renderPredictions(predictions)),
-        takeUntil(timer(5000)),
-        repeat()
+        takeUntil(timer(2000)),
+        repeat(),
       );
 
     // 訂閱Observeable
@@ -126,5 +143,29 @@ export class AppComponent implements OnInit {
         // this.webcam_init();
       })
     );
+  }
+
+  initSpeech() {
+    const speech = new Speech();
+    speech.init({
+      'volume': 1,
+      'lang': 'zh-TW',
+      'rate': 1,
+      'pitch': 1,
+      // 'voice': 'Chinese Mandarin female',
+      'splitSentences': true,
+      listeners: {
+        onvoiceschanged: voices => {
+          console.log("Voices changed", voices);
+        }
+      }
+    }).then((data) => {
+        console.log("Speech is ready", data);
+      //   speech.speak({
+      //     text: '哈樓 阿爸',
+      //     queue: false
+      //  });
+      this.speech = speech;
+    });
   }
 }
