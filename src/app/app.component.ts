@@ -156,7 +156,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // 'voice': 'Chinese Mandarin female',
       'splitSentences': true,
       listeners: {
-        onvoiceschanged: voices => {
+        onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
         }
       }
@@ -173,9 +173,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '五郎喔',
-          queue: false
+          queue: false,
+          listeners: {
+            onstart: () => {
+                console.log("Start utterance")
+            },
+            onend: () => {
+                console.log("End utterance")
+            },
+            onresume: () => {
+                console.log("Resume utterance")
+            },
+            onboundary: (event) => {
+                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+            }
+          }
         }
-      )
+      ).then(()=>{});
     };
 
     // tv
@@ -184,9 +198,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '賣購跨點系阿!',
-          queue: false
+          queue: false,
+          listeners: {
+            onstart: () => {
+                console.log("Start utterance")
+            },
+            onend: () => {
+                console.log("End utterance")
+            },
+            onresume: () => {
+                console.log("Resume utterance")
+            },
+            onboundary: (event) => {
+                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+            }
+          }
         }
-      )
+      ).then(()=>{});
     };
 
     // cup
@@ -195,9 +223,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '來杯可樂吧',
-          queue: false
+          queue: false,
+          listeners: {
+            onstart: () => {
+                console.log("Start utterance")
+            },
+            onend: () => {
+                console.log("End utterance")
+            },
+            onresume: () => {
+                console.log("Resume utterance")
+            },
+            onboundary: (event) => {
+                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+            }
+          }
         }
-      )
+      ).then(()=>{});
     };
 
     // teddy bear
@@ -206,9 +248,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '熊熊',
-          queue: false
+          queue: false,
+          listeners: {
+            onstart: () => {
+                console.log("Start utterance")
+            },
+            onend: () => {
+                console.log("End utterance")
+            },
+            onresume: () => {
+                console.log("Resume utterance")
+            },
+            onboundary: (event) => {
+                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+            }
+          }
         }
-      )
+      ).then(()=>{});
     };
 
     // chair
@@ -217,9 +273,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '能站就不要座',
-          queue: false
+          queue: false,
+          listeners: {
+            onstart: () => {
+                console.log("Start utterance")
+            },
+            onend: () => {
+                console.log("End utterance")
+            },
+            onresume: () => {
+                console.log("Resume utterance")
+            },
+            onboundary: (event) => {
+                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+            }
+          }
         }
-      )
+      ).then(()=>{});
     };
   }
 
