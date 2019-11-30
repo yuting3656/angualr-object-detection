@@ -19,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // test to speech
   // https://usefulangle.com/post/98/javascript-text-to-speech
   // https://www.npmjs.com/package/speak-tts
+  // https://codesandbox.io/s/elated-chatterjee-yt40d
 
   private subs = new SubSink();
   // 設定Webcam
@@ -106,16 +107,61 @@ export class AppComponent implements OnInit, OnDestroy {
       const y = prediction.bbox[1];
       ctx.fillStyle = '#000000';
       ctx.fillText(prediction.class, x, y);
+
+      // person
       if (prediction.class == 'person') {
-        ctx.fillText('有人阿!!!', 1, 1);
 
         this.speech.speak(
           {
-            text: '哈樓 阿爸',
+            text: '五郎喔',
             queue: false
           }
         )
-      }
+      };
+
+      // tv
+      if (prediction.class == 'tv') {
+
+        this.speech.speak(
+          {
+            text: '賣購跨點系阿!',
+            queue: false
+          }
+        )
+      };
+
+      // cup
+      if (prediction.class == 'cup') {
+
+        this.speech.speak(
+          {
+            text: '來杯可樂吧',
+            queue: false
+          }
+        )
+      };
+
+      // teddy bear
+      if (prediction.class == 'teddy bear') {
+
+        this.speech.speak(
+          {
+            text: '熊熊',
+            queue: false
+          }
+        )
+      };
+
+      // chair
+      if (prediction.class == 'chair') {
+
+        this.speech.speak(
+          {
+            text: '能站就不要座',
+            queue: false
+          }
+        )
+      };
     });
   }
 
