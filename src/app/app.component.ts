@@ -27,10 +27,15 @@ export class AppComponent implements OnInit, OnDestroy {
   // yuting spinner
   showspinner = true;
   // speech
-  speech: any;
+  speech: Speech;
+  // loading %
+  percentage: number;
+  // speak flag
+  speakFlag: string;
 
   constructor() {
     this.initSpeech();
+    this.percentage = 0;
   }
 
   ngOnInit() {
@@ -49,15 +54,14 @@ export class AppComponent implements OnInit, OnDestroy {
     navigator.mediaDevices
       .getUserMedia({
         audio: false,
-        video: {
-          // environment 手機可以
-          facingMode: 'environment',
-        }
+        video: true,
       })
       .then(stream => {
+        this.percentage = 50;
         this.video.srcObject = stream;
         this.video.onloadedmetadata = () => {
           this.video.play();
+          this.percentage = 65;
           this.init_cocossd_obj_prediction();
         };
       }).catch((error) => { alert(JSON.stringify(error)) });
@@ -107,82 +111,30 @@ export class AppComponent implements OnInit, OnDestroy {
       const y = prediction.bbox[1];
       ctx.fillStyle = '#000000';
       ctx.fillText(prediction.class, x, y);
-
-      // person
-      if (prediction.class == 'person') {
-
-        this.speech.speak(
-          {
-            text: '五郎喔',
-            queue: false
-          }
-        )
-      };
-
-      // tv
-      if (prediction.class == 'tv') {
-
-        this.speech.speak(
-          {
-            text: '賣購跨點系阿!',
-            queue: false
-          }
-        )
-      };
-
-      // cup
-      if (prediction.class == 'cup') {
-
-        this.speech.speak(
-          {
-            text: '來杯可樂吧',
-            queue: false
-          }
-        )
-      };
-
-      // teddy bear
-      if (prediction.class == 'teddy bear') {
-
-        this.speech.speak(
-          {
-            text: '熊熊',
-            queue: false
-          }
-        )
-      };
-
-      // chair
-      if (prediction.class == 'chair') {
-
-        this.speech.speak(
-          {
-            text: '能站就不要座',
-            queue: false
-          }
-        )
-      };
+      this.speakOut(prediction)
     });
   }
 
   // 把讀取檔案的 cocssd code 抽出來
   init_cocossd_obj_prediction() {
+    this.percentage = 70;
     const action$ = (model: cocoSSD.ObjectDetection) =>
       defer(() => model.detect(this.video)).pipe(
         observeOn(animationFrameScheduler),
         tap((predictions) => this.renderPredictions(predictions)),
-        takeUntil(timer(2000)),
+        // takeUntil(timer(2000)),
         repeat(),
       );
-
+      this.percentage = 75;
     // 訂閱Observeable
     this.subs.add(
       // 下載模型
       from(cocoSSD.load({ base: 'lite_mobilenet_v2' })).pipe(
         // 預測
+        tap(() => this.percentage = 80),
         concatMap(model => action$(model)),
+        tap(() => this.percentage = 90),
         tap(() => this.showspinner = false),
-        // repeat(),
       ).subscribe(() => { }, (error) => {
         console.log('出包搂 相機GG');
         console.log(error);
@@ -206,12 +158,69 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     }).then((data) => {
-        console.log("Speech is ready", data);
-      //   speech.speak({
-      //     text: '哈樓 阿爸',
-      //     queue: false
-      //  });
+      console.log("Speech is ready", data);
       this.speech = speech;
     });
+  }
+
+  speakOut(prediction: cocoSSD.DetectedObject){
+          // person
+          if (prediction.class === 'person' && this.speakFlag !== 'person') {
+            this.updateSpeakFlag(prediction.class)
+            this.speech.speak(
+              {
+                text: '五郎喔',
+                queue: false
+              }
+            )
+          };
+
+          // tv
+          if (prediction.class == 'tv' && this.speakFlag !== 'tv') {
+            this.updateSpeakFlag(prediction.class)
+            this.speech.speak(
+              {
+                text: '賣購跨點系阿!',
+                queue: false
+              }
+            )
+          };
+
+          // cup
+          if (prediction.class == 'cup' && this.speakFlag !== 'cup') {
+            this.updateSpeakFlag(prediction.class)
+            this.speech.speak(
+              {
+                text: '來杯可樂吧',
+                queue: false
+              }
+            )
+          };
+
+          // teddy bear
+          if (prediction.class == 'teddy bear' && this.speakFlag !== 'teddy bear') {
+            this.updateSpeakFlag(prediction.class)
+            this.speech.speak(
+              {
+                text: '熊熊',
+                queue: false
+              }
+            )
+          };
+
+          // chair
+          if (prediction.class == 'chair' && this.speakFlag !== 'chair') {
+            this.updateSpeakFlag(prediction.class)
+            this.speech.speak(
+              {
+                text: '能站就不要座',
+                queue: false
+              }
+            )
+          };
+  }
+
+  updateSpeakFlag(predicitonClass: string){
+     this.speakFlag = predicitonClass;
   }
 }

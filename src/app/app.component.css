@@ -31,3 +31,12 @@
       -ms-transform: rotate(360deg);
   }
 }
+
+
+.percentage{
+  position: absolute;
+  right: 45%;
+  font-family: Andale Mono;
+  font-size: 30px;
+  font-weight: bolder;
+}
