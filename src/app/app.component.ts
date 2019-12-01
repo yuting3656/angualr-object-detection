@@ -158,6 +158,7 @@ export class AppComponent implements OnInit, OnDestroy {
       listeners: {
         onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
+          this.speech = speech;
         }
       }
     }).then((data) => {
