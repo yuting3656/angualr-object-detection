@@ -20,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // https://usefulangle.com/post/98/javascript-text-to-speech
   // https://www.npmjs.com/package/speak-tts
   // https://codesandbox.io/s/elated-chatterjee-yt40d
+  // https://usefulangle.com/post/98/javascript-text-to-speech
 
   private subs = new SubSink();
   // 設定Webcam
