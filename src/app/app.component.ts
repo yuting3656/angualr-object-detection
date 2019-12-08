@@ -165,11 +165,11 @@ export class AppComponent implements OnInit, OnDestroy {
   initSpeech() {
     const speech = new Speech();
     speech.init({
-      'volume': 1,
+      'volume': 0.5,
       'lang': 'zh-TW', // 這個要加入不然 default 會沒有發不出聲音
       'rate': 1,
       'pitch': 1,
-      'splitSentences': true,
+      // 'splitSentences': true,
       listeners: {
         onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
@@ -198,7 +198,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '五郎喔',
-          queue: false,
         }
       ).then(()=>{});
     };
@@ -209,7 +208,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '賣購跨點系阿!',
-          queue: false,
         }
       ).then(()=>{});
     };
@@ -220,7 +218,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '來杯可樂吧',
-          queue: false,
         }
       ).then(()=>{});
     };
@@ -231,7 +228,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '熊熊',
-          queue: false,
         }
       ).then(()=>{});
     };
@@ -242,7 +238,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.speech.speak(
         {
           text: '能站就不要座',
-          queue: false,
+          // queue: false,
         }
       ).then(()=>{});
     };
