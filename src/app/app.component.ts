@@ -147,28 +147,46 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
+
+  _addVoicesList = voices => {
+    const list = window.document.createElement("div");
+    let html =
+      '<h2>Available Voices</h2><select id="languages"><option value="">autodetect language</option>';
+    voices.forEach(voice => {
+      html += `<option value="${voice.lang}" data-name="${voice.name}">${
+        voice.name
+      } (${voice.lang})</option>`;
+    });
+    list.innerHTML = html;
+    window.document.getElementsByClassName('footerSelect')[0].appendChild(list);
+    // window.document.body.appendChild(list);
+  };
+
   initSpeech() {
     const speech = new Speech();
     speech.init({
       'volume': 1,
-      // 'lang': 'zh-Hans',
       'rate': 1,
       'pitch': 1,
-      'voice': 'Mei-Jia',
       'splitSentences': true,
       listeners: {
         onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
+          this._addVoicesList(voices)
           this.speech = speech;
         }
       }
     }).then((data) => {
-      console.log("Speech is ready", data);
-      this.speech = speech;
+      // console.log("Speech is ready", data);
+      // this._addVoicesList(data)
+      // this.speech = speech;
     });
   }
 
   speakOut(prediction: cocoSSD.DetectedObject) {
+
+    this.speech.setLanguage('zh-TW')
+    this.speech.setVoice('Mei-Jia')
     // person
     if (prediction.class === 'person' && this.speakFlag !== 'person') {
       this.updateSpeakFlag(prediction.class)
@@ -299,3 +317,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.speakFlag = predicitonClass;
   }
 }
+
+
+
