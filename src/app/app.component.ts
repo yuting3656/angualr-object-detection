@@ -191,7 +191,6 @@ export class AppComponent implements OnInit, OnDestroy {
       ttsSpeech.setVoice(data.voices[ data.voices.length - 2 ].name)
       ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
       console.log(data.voices[ data.voices.length - 2 ].lang)
-      alert(data.voices[ data.voices.length - 2 ].name)
       this.speech = ttsSpeech;
     });
   }

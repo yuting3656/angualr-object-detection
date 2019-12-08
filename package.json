@@ -26,7 +26,7 @@
     "@types/webrtc": "0.0.25",
     "express": "^4.17.1",
     "rxjs": "~6.4.0",
-    "speak-tts": "^2.0.4",
+    "speak-tts": "^2.0.8",
     "subsink": "^1.0.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
