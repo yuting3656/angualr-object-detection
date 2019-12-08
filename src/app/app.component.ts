@@ -170,21 +170,24 @@ export class AppComponent implements OnInit, OnDestroy {
       rate: 1,
       pitch: 1,
       // 'splitSentences': true,
-      listeners: {
-        onvoiceschanged: (voices) => {
-          console.log("Voices changed", voices);
-          this._addVoicesList(voices)
-          const list = window.document.createElement("div");
-          let html = '';
-          voices.forEach((voice) => {
-             html += `"${voice.name}"`
-          });
-          list.innerHTML = html
-          window.document.getElementsByClassName("voicesList")[0].appendChild(list)
-        }
-      }
+      // listeners: {
+      //   onvoiceschanged: (voices) => {
+      //     console.log("Voices changed", voices);
+      //     this._addVoicesList(voices)
+      //     const list = window.document.createElement("div");
+      //     let html = '';
+      //     voices.forEach((voice) => {
+      //        html += `"${voice.name}"`
+      //     });
+      //     list.innerHTML = html
+      //     window.document.getElementsByClassName("voicesList")[0].appendChild(list)
+      //   }
+      // }
     }).then((data) => {
       ttsSpeech.setVoice(data.voices[ data.voices.length - 2 ].name)
+      ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
+      console.log(data.voices[ data.voices.length - 2 ].lang)
+      alert(data.voices[ data.voices.length - 2 ].name)
       this.speech = ttsSpeech;
     });
   }
