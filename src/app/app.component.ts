@@ -163,8 +163,8 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   initSpeech() {
-    const speech = new Speech();
-    speech.init({
+    const ttsSpeech = new Speech();
+    ttsSpeech.init({
       volume: 1,
       lang: 'zh-TW', // 這個要加入不然 default 會沒有發不出聲音
       rate: 1,
@@ -184,8 +184,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     }).then((data) => {
-      speech.setVoice(data.voices[ data.voices.length - 2 ].name)
-      this.speech = speech;
+      ttsSpeech.setVoice(data.voices[ data.voices.length - 2 ].name)
+      this.speech = ttsSpeech;
     });
   }
 
