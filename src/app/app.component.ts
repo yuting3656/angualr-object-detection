@@ -126,7 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
       defer(() => model.detect(this.video)).pipe(
         observeOn(animationFrameScheduler),
         tap((predictions) => this.renderPredictions(predictions)),
-        // takeUntil(timer(2000)),
+        takeUntil(timer(2000)),
         repeat(),
       );
     this.percentage = 75;
@@ -174,6 +174,15 @@ export class AppComponent implements OnInit, OnDestroy {
         onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
           this._addVoicesList(voices)
+
+          const list = window.document.createElement("div");
+          let html = '';
+          voices.forEach((voice) => {
+             html += `"${voice.name}"`
+          });
+          list.innerHTML = html
+
+          window.document.getElementsByClassName("voicesList")[0].appendChild(list)
           this.speech = speech;
         }
       }
@@ -186,14 +195,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   speakOut(prediction: cocoSSD.DetectedObject) {
 
-     this.speech.setLanguage('zh-TW');
-     try {
-       this.speech.setVoice('Tian-Tian');
-     } catch {
-
-     }
     // person
     if (prediction.class === 'person' && this.speakFlag !== 'person') {
+      this.speech.setLanguage('zh-TW');
+      try {
+        this.speech.setVoice('Tian-Tian');
+      } catch {
+
+      }
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
@@ -205,6 +214,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // tv
     if (prediction.class == 'tv' && this.speakFlag !== 'tv') {
+      this.speech.setLanguage('zh-TW');
+      try {
+        this.speech.setVoice('Tian-Tian');
+      } catch {
+
+      }
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
@@ -216,6 +231,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // cup
     if (prediction.class == 'cup' && this.speakFlag !== 'cup') {
+      this.speech.setLanguage('zh-TW');
+      try {
+        this.speech.setVoice('Tian-Tian');
+      } catch {
+
+      }
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
@@ -227,6 +248,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // teddy bear
     if (prediction.class == 'teddy bear' && this.speakFlag !== 'teddy bear') {
+      this.speech.setLanguage('zh-TW');
+      try {
+        this.speech.setVoice('Tian-Tian');
+      } catch {
+
+      }
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
@@ -238,6 +265,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // chair
     if (prediction.class == 'chair' && this.speakFlag !== 'chair') {
+      this.speech.setLanguage('zh-TW');
+      try {
+        this.speech.setVoice('Tian-Tian');
+      } catch {
+
+      }
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
