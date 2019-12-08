@@ -174,23 +174,23 @@ export class AppComponent implements OnInit, OnDestroy {
         onvoiceschanged: (voices) => {
           console.log("Voices changed", voices);
           this._addVoicesList(voices)
-          const list = window.document.createElement("div");
-          let html = '';
-          voices.forEach((voice) => {
-             html += `"${voice.name}"`
-          });
-          list.innerHTML = html
-          window.document.getElementsByClassName("voicesList")[0].appendChild(list)
+          // const list = window.document.createElement("div");
+          // let html = '';
+          // voices.forEach((voice) => {
+          //    html += `"${voice.name}"`
+          // });
+          // list.innerHTML = html
+          // window.document.getElementsByClassName("voicesList")[0].appendChild(list)
 
-          ttsSpeech.setVoice(voices[ voices.length - 2 ].name)
-          ttsSpeech.setLanguage(voices[ voices.length - 2 ].lang)
+          // ttsSpeech.setVoice(voices[ voices.length - 2 ].name)
+          // ttsSpeech.setLanguage(voices[ voices.length - 2 ].lang)
           this.speech = ttsSpeech;
         }
       }
     }).then((data) => {
-      ttsSpeech.setVoice(data.voices[ data.voices.length - 2 ].name)
-      ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
-      console.log(data.voices[ data.voices.length - 2 ].lang)
+      // ttsSpeech.setVoice(data.voices[ data.voices.length - 2 ].name)
+      // ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
+      // console.log(data.voices[ data.voices.length - 2 ].lang)
       this.speech = ttsSpeech;
     });
   }
