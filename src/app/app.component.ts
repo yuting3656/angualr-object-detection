@@ -166,6 +166,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const speech = new Speech();
     speech.init({
       'volume': 1,
+      'lang': 'zh-TW', // 這個要加入不然 default 會沒有發不出聲音
       'rate': 1,
       'pitch': 1,
       'splitSentences': true,
@@ -177,16 +178,16 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     }).then((data) => {
-      // console.log("Speech is ready", data);
-      // this._addVoicesList(data)
-      // this.speech = speech;
+      console.log("Speech is ready", data);
+      this._addVoicesList(data)
+      this.speech = speech;
     });
   }
 
   speakOut(prediction: cocoSSD.DetectedObject) {
 
-    this.speech.setLanguage('zh-TW')
-    this.speech.setVoice('Mei-Jia')
+     this.speech.setLanguage('zh-TW');
+     this.speech.setVoice('Mei-Jia');
     // person
     if (prediction.class === 'person' && this.speakFlag !== 'person') {
       this.updateSpeakFlag(prediction.class)
@@ -194,20 +195,6 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: '五郎喔',
           queue: false,
-          listeners: {
-            onstart: () => {
-                console.log("Start utterance")
-            },
-            onend: () => {
-                console.log("End utterance")
-            },
-            onresume: () => {
-                console.log("Resume utterance")
-            },
-            onboundary: (event) => {
-                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-            }
-          }
         }
       ).then(()=>{});
     };
@@ -219,20 +206,6 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: '賣購跨點系阿!',
           queue: false,
-          listeners: {
-            onstart: () => {
-                console.log("Start utterance")
-            },
-            onend: () => {
-                console.log("End utterance")
-            },
-            onresume: () => {
-                console.log("Resume utterance")
-            },
-            onboundary: (event) => {
-                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-            }
-          }
         }
       ).then(()=>{});
     };
@@ -244,20 +217,6 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: '來杯可樂吧',
           queue: false,
-          listeners: {
-            onstart: () => {
-                console.log("Start utterance")
-            },
-            onend: () => {
-                console.log("End utterance")
-            },
-            onresume: () => {
-                console.log("Resume utterance")
-            },
-            onboundary: (event) => {
-                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-            }
-          }
         }
       ).then(()=>{});
     };
@@ -269,20 +228,6 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: '熊熊',
           queue: false,
-          listeners: {
-            onstart: () => {
-                console.log("Start utterance")
-            },
-            onend: () => {
-                console.log("End utterance")
-            },
-            onresume: () => {
-                console.log("Resume utterance")
-            },
-            onboundary: (event) => {
-                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-            }
-          }
         }
       ).then(()=>{});
     };
@@ -294,20 +239,6 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           text: '能站就不要座',
           queue: false,
-          listeners: {
-            onstart: () => {
-                console.log("Start utterance")
-            },
-            onend: () => {
-                console.log("End utterance")
-            },
-            onresume: () => {
-                console.log("Resume utterance")
-            },
-            onboundary: (event) => {
-                console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
-            }
-          }
         }
       ).then(()=>{});
     };
