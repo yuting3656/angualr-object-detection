@@ -165,10 +165,10 @@ export class AppComponent implements OnInit, OnDestroy {
   initSpeech() {
     const speech = new Speech();
     speech.init({
-      'volume': 1,
-      'lang': 'zh-TW', // 這個要加入不然 default 會沒有發不出聲音
-      'rate': 1,
-      'pitch': 1,
+      volume: 1,
+      lang: 'zh-TW', // 這個要加入不然 default 會沒有發不出聲音
+      rate: 1,
+      pitch: 1,
       // 'splitSentences': true,
       listeners: {
         onvoiceschanged: (voices) => {
