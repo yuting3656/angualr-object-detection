@@ -178,16 +178,20 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     }).then((data) => {
-      console.log("Speech is ready", data);
-      this._addVoicesList(data)
-      this.speech = speech;
+      // console.log("Speech is ready", data);
+      // this._addVoicesList(data)
+      // this.speech = speech;
     });
   }
 
   speakOut(prediction: cocoSSD.DetectedObject) {
 
      this.speech.setLanguage('zh-TW');
-     this.speech.setVoice('Mei-Jia');
+     try {
+       this.speech.setVoice('Mei-Jia');
+     } catch {
+
+     }
     // person
     if (prediction.class === 'person' && this.speakFlag !== 'person') {
       this.updateSpeakFlag(prediction.class)
