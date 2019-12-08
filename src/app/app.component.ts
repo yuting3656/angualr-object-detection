@@ -180,7 +180,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }).then((data) => {
       // console.log("Speech is ready", data);
       // this._addVoicesList(data)
-      // this.speech = speech;
+      this.speech = speech;
     });
   }
 
