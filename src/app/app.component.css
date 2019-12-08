@@ -40,3 +40,11 @@
   font-size: 30px;
   font-weight: bolder;
 }
+
+.footerSelect{
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 30vh;
+  background-color: cadetblue;
+}

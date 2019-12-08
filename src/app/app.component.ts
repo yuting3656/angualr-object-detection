@@ -151,10 +151,10 @@ export class AppComponent implements OnInit, OnDestroy {
     const speech = new Speech();
     speech.init({
       'volume': 1,
-      'lang': 'zh-Hans',
+      // 'lang': 'zh-Hans',
       'rate': 1,
       'pitch': 1,
-      // 'voice': 'Chinese Mandarin female',
+      'voice': 'Mei-Jia',
       'splitSentences': true,
       listeners: {
         onvoiceschanged: (voices) => {
