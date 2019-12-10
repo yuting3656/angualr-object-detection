@@ -46,6 +46,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   userLang: string;
   // 看使用者所使用的瀏覽器
   userBrowser: string;
+  safariUser: boolean;
 
   constructor() {
     this.initSpeech();
@@ -66,7 +67,12 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
 
     if (!this.userBrowser.includes('Safari')) {
       this.videoFram.nativeElement.hidden = true;
+    } else {
+      this.safariUser = true;
     }
+
+
+    console.log('測試')
 
   }
 
@@ -240,11 +246,11 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
         this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
       } else {
         // 是ios
-        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].lang
-        this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
+      this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].lang
+      this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
 
-        this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].lang)
-        this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].lang)
+      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
       }
     });
   }
@@ -399,7 +405,16 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
     return M.join(' ');
   };
 
-
+  ai_speak() {
+    this.speech.setLanguage('zh-TW')
+    this.speech.setVoice('Mei-Jia')
+    this.speech.speak(
+      {
+        text: '有聲音代表 我可以開始說話了', //prediction.class, //'熊熊',
+        queue: false,
+      }
+    ).then(() => { });
+  }
 
 }
 

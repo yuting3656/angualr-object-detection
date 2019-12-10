@@ -16,6 +16,9 @@
 
 
 <div class="clientDeviceInfo">
+    <div *ngIf="safariUser" >
+        <button (click)="ai_speak()"> SPEAK </button>
+    </div>
     <div>
         瀏覽器: {{userBrowser}}
     </div>
