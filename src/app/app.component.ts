@@ -233,18 +233,18 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
 
       if (!this.userBrowser.includes('Safari')) {
         // 非 ios
-        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 1].name
+        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 1].lang
         this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 1].name
 
+        this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 1].lang)
         this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
-        // this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 1].name)
       } else {
         // 是ios
-        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].name
+        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].lang
         this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
 
+        this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].lang)
         this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
-        // this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].name)
       }
     });
   }
