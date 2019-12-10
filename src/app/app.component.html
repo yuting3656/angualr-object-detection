@@ -1,13 +1,28 @@
- <div *ngIf="showspinner"><div  id="nb-global-spinner" class="image-w spinner"><img src="/assets/kp.jpg" alt="spinner" /></div>
- <span class="percentage">{{percentage}}%</span>
+<div *ngIf="showspinner">
+    <div id="nb-global-spinner" class="image-w spinner"><img src="/assets/kp.jpg" alt="spinner" /></div>
+    <span class="percentage">{{percentage}}%</span>
 </div>
 
 <div style="text-align:center">
-  <canvas  #predictPaint id="canvas"></canvas>
-  <video #videoFrame id="vid" playsinline></video>
+
+    <canvas #predictPaint id="canvas"></canvas>
+    <video #videoFrame id="vid" playsinline></video>
 </div>
 
 
 <!-- <div class="footerSelect">
   <div class="voicesList"></div>
 </div> -->
+
+
+<div class="clientDeviceInfo">
+    <div>
+        瀏覽器: {{userBrowser}}
+    </div>
+    <div>
+        語音: {{userVocie}}
+    </div>
+    <div>
+        語言: {{userLang}}
+    </div>
+</div>

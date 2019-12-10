@@ -48,3 +48,12 @@
   height: 30vh;
   background-color: cadetblue;
 }
+
+.clientDeviceInfo{
+  position: fixed;
+  bottom: 0;
+  /* width: 10vw; */
+  color: #000;
+  font-weight: 20vh;
+  /* background-color: gold; */
+}

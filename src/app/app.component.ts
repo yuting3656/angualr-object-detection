@@ -40,13 +40,17 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   // loading %
   percentage: number;
   // speak flag
-  speakFlag: string;
-  //
+  speakFlag: string;// 存入使用者所使用的 voices [SpeechSynthesisVoice]
   voiceData: any;
+  userVocie: string;
+  userLang: string;
+  // 看使用者所使用的瀏覽器
+  userBrowser: string;
 
   constructor() {
     this.initSpeech();
     this.percentage = 0;
+    this.userBrowser = this.checkBrower();
   }
 
   ngOnInit() {
@@ -60,14 +64,10 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   ngAfterViewInit() {
     this.context = (<HTMLCanvasElement>this.predictPaint.nativeElement).getContext('2d');
 
-    if (!this.checkBrower().includes('Safari')) {
+    if (!this.userBrowser.includes('Safari')) {
       this.videoFram.nativeElement.hidden = true;
-      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
-      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].name)
-    } else {
-      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
-      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 1].name)
     }
+
   }
 
   ngAfterContentChecked() {
@@ -97,7 +97,10 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
 
           // this.test_predect()
         };
-      }).catch((error) => { alert(JSON.stringify(error)) });
+      }).catch((error) => {
+        alert(JSON.stringify(error));
+        console.log(error);
+      });
   }
 
   // 預測完畫進去圖案上
@@ -217,6 +220,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
 
           // ttsSpeech.setVoice(voices[ voices.length - 2 ].name)
           // ttsSpeech.setLanguage(voices[ voices.length - 2 ].lang)
+          this.voiceData = voices
           this.speech = ttsSpeech;
         }
       }
@@ -226,10 +230,27 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       // console.log(data.voices[ data.voices.length - 2 ].lang)
       this.voiceData = data
       this.speech = ttsSpeech;
+
+      if (!this.userBrowser.includes('Safari')) {
+        // 非 ios
+        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 1].name
+        this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 1].name
+
+        this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
+        // this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 1].name)
+      } else {
+        // 是ios
+        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].name
+        this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
+
+        this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+        // this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+      }
     });
   }
 
   speakOut(prediction: cocoSSD.DetectedObject) {
+
 
     // person
     if (prediction.class === 'person' && this.speakFlag !== 'person') {
@@ -362,21 +383,21 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   // }
 
 
-  checkBrower = function(){
-    var ua= navigator.userAgent, tem,
-    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-    if(/trident/i.test(M[1])){
-        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-        return 'IE '+(tem[1] || '');
+  checkBrower = function () {
+    var ua = navigator.userAgent, tem,
+      M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+      return 'IE ' + (tem[1] || '');
     }
-    if(M[1]=== 'Chrome'){
-        tem= ua.match(/\b(OPR|Edge?)\/(\d+)/);
-        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera').replace('Edg ', 'Edge ');
+    if (M[1] === 'Chrome') {
+      tem = ua.match(/\b(OPR|Edge?)\/(\d+)/);
+      if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera').replace('Edg ', 'Edge ');
     }
-    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
     return M.join(' ');
-};
+  };
 
 
 
