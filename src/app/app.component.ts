@@ -41,6 +41,8 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   percentage: number;
   // speak flag
   speakFlag: string;
+  //
+  voiceData: any;
 
   constructor() {
     this.initSpeech();
@@ -60,6 +62,11 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
 
     if (!this.checkBrower().includes('Safari')) {
       this.videoFram.nativeElement.hidden = true;
+      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+    } else {
+      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
+      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 1].name)
     }
   }
 
@@ -214,9 +221,10 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
         }
       }
     }).then((data) => {
-      ttsSpeech.setVoice(data.voices[data.voices.length - 2].name)
-      ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
+      // ttsSpeech.setVoice(data.voices[data.voices.length - 2].name)
+      // ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
       // console.log(data.voices[ data.voices.length - 2 ].lang)
+      this.voiceData = data
       this.speech = ttsSpeech;
     });
   }
@@ -261,7 +269,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: prediction.class, //'熊熊',
+          text: '熊熊', //prediction.class, //'熊熊',
           queue: false,
         }
       ).then(() => { });
