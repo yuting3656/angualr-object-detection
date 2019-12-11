@@ -52,6 +52,7 @@
 .clientDeviceInfo{
   position: fixed;
   bottom: 0;
+  right: 0;
   /* width: 10vw; */
   color: #000;
   font-weight: 20vh;

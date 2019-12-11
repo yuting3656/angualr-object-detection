@@ -1,4 +1,6 @@
 import { ElementRef, AfterViewInit, AfterContentChecked } from '@angular/core';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
 // <reference types="webrtc" />
 import { Component, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
 import * as cocoSSD from '@tensorflow-models/coco-ssd';
@@ -9,7 +11,39 @@ import { SubSink } from 'subsink';
 // text to speech
 import Speech from 'speak-tts';
 import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { ObjectDetectionBaseModel, ObjectDetection } from '@tensorflow-models/coco-ssd';
+
+
+export class SayYourName {
+  car: string;
+  chair: string;
+  laptop: string;
+  book: string;
+  person: string;
+  cup: string;
+  teddyBear: string;
+  clock: string;
+  dog: string;
+  cat: string;
+  tv: string;
+
+  constructor() {
+    this.car = '五掐喔',
+    this.chair = '能站就不要坐',
+    this.laptop = '我是天才小駭客',
+    this.book = '有黃金',
+    this.person = '五郎喔',
+    this.cup = '來杯可樂吧',
+    this.teddyBear = '雄雄',
+    this.clock = '時間就是金錢　朋友',
+    this.dog = '旺旺',
+    this.cat = '喵喵',
+    this.tv = '賣購跨點系阿'
+  }
+
+}
+
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -44,14 +78,32 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   voiceData: any;
   userVocie: string;
   userLang: string;
+  voicesShowingFlag: boolean;
   // 看使用者所使用的瀏覽器
   userBrowser: string;
   safariUser: boolean;
+　
+  //
+  sayYourNameData = new SayYourName()
+  sayYourNameFrom = this.fb.group({
+    car: [this.sayYourNameData.car, ],
+    chair: [this.sayYourNameData.chair, ],
+    laptop: [this.sayYourNameData.laptop,],
+    book: [this.sayYourNameData.book,],
+    person: [this.sayYourNameData.person,],
+    cup: [this.sayYourNameData.cup,],
+    teddyBear: [this.sayYourNameData.teddyBear,],
+    clock: [this.sayYourNameData.clock,],
+    dog: [this.sayYourNameData.dog,],
+    cat: [this.sayYourNameData.cat,],
+    tv: [this.sayYourNameData.tv,],
+  })
 
-  constructor() {
+  constructor(private fb: FormBuilder, ) {
     this.initSpeech();
     this.percentage = 0;
     this.userBrowser = this.checkBrower();
+
   }
 
   ngOnInit() {
@@ -70,10 +122,6 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
     } else {
       this.safariUser = true;
     }
-
-
-    console.log('測試')
-
   }
 
   ngAfterContentChecked() {
@@ -164,7 +212,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
     this.percentage = 70;
     const action$ = (model: cocoSSD.ObjectDetection) =>
       defer(() => model.detect(this.video)).pipe(
-        observeOn(animationFrame),
+        observeOn(animationFrameScheduler),
         // observeOn(of(0, animationFrame)),
         tap((predictions) => this.renderPredictions(predictions)),
         repeat(),
@@ -214,28 +262,17 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       'splitSentences': true,
       listeners: {
         onvoiceschanged: (voices) => {
-          console.log("Voices changed", voices);
-          // this._addVoicesList(voices)
-          // const list = window.document.createElement("div");
-          // let html = '';
-          // voices.forEach((voice) => {
-          //    html += `"${voice.name}"`
-          // });
-          // list.innerHTML = html
-          // window.document.getElementsByClassName("voicesList")[0].appendChild(list)
-
-          // ttsSpeech.setVoice(voices[ voices.length - 2 ].name)
-          // ttsSpeech.setLanguage(voices[ voices.length - 2 ].lang)
+          // 實測 ios 手機進入這
           this.voiceData = voices
           this.speech = ttsSpeech;
+          this.voicesShowingFlag = true;
         }
       }
     }).then((data) => {
-      // ttsSpeech.setVoice(data.voices[data.voices.length - 2].name)
-      // ttsSpeech.setLanguage(data.voices[ data.voices.length - 2 ].lang)
-      // console.log(data.voices[ data.voices.length - 2 ].lang)
+      // 實測 anfroid 手機會直接進入這
       this.voiceData = data
       this.speech = ttsSpeech;
+      this.voicesShowingFlag = true;
 
       if (!this.userBrowser.includes('Safari')) {
         // 非 ios
@@ -246,11 +283,11 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
         this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 1].name)
       } else {
         // 是ios
-      this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].lang
-      this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
+        this.userLang = this.voiceData.voices[this.voiceData.voices.length - 2].lang
+        this.userVocie = this.voiceData.voices[this.voiceData.voices.length - 2].name
 
-      this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].lang)
-      this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
+        this.speech.setLanguage(this.voiceData.voices[this.voiceData.voices.length - 2].lang)
+        this.speech.setVoice(this.voiceData.voices[this.voiceData.voices.length - 2].name)
       }
     });
   }
@@ -263,7 +300,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: '五郎喔', //prediction.class,//'五郎喔',
+          text: this.sayYourNameData.person, //prediction.class,//'五郎喔',
           queue: false,
         }
       ).then(() => { });
@@ -274,7 +311,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: '賣購跨點系阿', //prediction.class, //'賣購跨點系阿!',
+          text: this.sayYourNameData.tv, //prediction.class, //'賣購跨點系阿!',
           queue: false,
         }
       ).then(() => { });
@@ -285,7 +322,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: '來杯可樂吧', //prediction.class, //'來杯可樂吧',
+          text: this.sayYourNameData.cup, //prediction.class, //'來杯可樂吧',
           queue: false,
         }
       ).then(() => { });
@@ -296,7 +333,7 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: '熊熊', //prediction.class, //'熊熊',
+          text: this.sayYourNameData.teddyBear, //prediction.class, //'熊熊',
           queue: false,
         }
       ).then(() => { });
@@ -307,86 +344,84 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
       this.updateSpeakFlag(prediction.class)
       this.speech.speak(
         {
-          text: '能站就不要座', //prediction.class, //'能站就不要座',
+          text: this.sayYourNameData.chair, //prediction.class, //'能站就不要座',
           queue: false,
         }
       ).then(() => { });
     };
+
+    // dog
+    if (prediction.class == 'dog' && this.speakFlag !== 'dog') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.dog, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+    // cat
+    if (prediction.class == 'cat' && this.speakFlag !== 'cat') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.cat, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+    // clock
+    if (prediction.class == 'clock' && this.speakFlag !== 'clock') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.clock, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+    // car
+    if (prediction.class == 'car' && this.speakFlag !== 'car') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.car, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+    // book
+    if (prediction.class == 'book' && this.speakFlag !== 'book') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.book, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+    // laptop
+    if (prediction.class == 'laptop' && this.speakFlag !== 'laptop') {
+      this.updateSpeakFlag(prediction.class)
+      this.speech.speak(
+        {
+          text: this.sayYourNameData.laptop, //prediction.class, //'能站就不要座',
+          queue: false,
+        }
+      ).then(() => { });
+    };
+
+
   }
 
   updateSpeakFlag(predicitonClass: string) {
     this.speakFlag = predicitonClass;
   }
-
-  // test save model to client browser
-
-  // saveModel() {
-  //   cocoSSD.load({ base: 'lite_mobilenet_v2' }).then((model) => {
-  //      model.
-  //   });
-  // }
-
-  // test_detectFrame = (video, model) => {
-  //   model.detect(video).then(predictions => {
-  //     this.renderPredictions(predictions);
-  //     requestAnimationFrame(() => {
-  //       this.test_detectFrame(video, model);
-  //     });
-  //   });
-  // }
-
-  // public async predictWithCocoModel() {
-  //   const model = await cocoSSD.load({ base: 'lite_mobilenet_v2' });
-  //   this.test_detectFrame(this.video, model);
-  //   console.log('model loaded');
-  // }
-
-  // public async test_predect() {
-  //   this.percentage = 80;
-  //   const model = await cocoSSD.load({ base: 'lite_mobilenet_v2' });
-  //   this.percentage = 100;
-  //   this.showspinner = false
-  //   this.model = model;
-  //   this.intervalRun = setInterval(() => {
-  //     this.model.detect(this.video).then((predictions: cocoSSD.DetectedObject[]) => {
-  //       const canvas = this.predictPaint.nativeElement;
-  //       canvas.width = 640;//window.innerWidth; //800;
-  //       canvas.height = 480;// window.innerHeight;//600;
-
-  //       // 設定文字
-  //       const font = '24px sans-serif';
-  //       this.context.font = font;
-  //       this.context.textBaseline = 'top';
-
-  //       this.context.drawImage(this.video, 0, 0, 640, 480)
-
-  //       predictions.forEach(prediction => {
-
-  //         const x = Math.round(prediction.bbox[0]);
-  //         const y = Math.round(prediction.bbox[1]);
-  //         // console.log(x)
-  //         const width = prediction.bbox[2];
-  //         const height = prediction.bbox[3];
-  //         // 畫上框框
-  //         this.context.strokeStyle = '#00FFFF';
-  //         this.context.lineWidth = 2;
-  //         this.context.strokeRect(
-  //           x, y, width, height);
-  //         // 畫上背景
-  //         this.context.fillStyle = '#00FFFF';
-  //         const textWidth = this.context.measureText(prediction.class).width;
-  //         const textHeight = parseInt(font, 10); // base 10
-  //         this.context.fillRect(x, y, textWidth + 4, textHeight + 4);
-
-  //         const x_1 = Math.round(prediction.bbox[0]);
-  //         const y_1 = Math.round(prediction.bbox[1]);
-  //         this.context.fillStyle = '#000000';
-  //         this.context.fillText(prediction.class, x_1, y_1);
-  //         this.speakOut(prediction)
-  //       });
-  //     })
-  //   }, 300); // 600 還是跑不動
-  // }
 
 
   checkBrower = function () {
@@ -406,14 +441,42 @@ export class AppComponent implements OnInit, AfterViewInit, AfterContentChecked,
   };
 
   ai_speak() {
-    this.speech.setLanguage('zh-TW')
-    this.speech.setVoice('Mei-Jia')
+    const defalutLang = 'zh-TW'
+    const defaultVocie = 'Mei-Jia'
+    this.speech.setLanguage(defalutLang)
+    this.speech.setVoice(defaultVocie)
+    this.userLang = defalutLang
+    this.userVocie = defaultVocie
     this.speech.speak(
       {
         text: '有聲音代表 我可以開始說話了', //prediction.class, //'熊熊',
         queue: false,
       }
     ).then(() => { });
+  }
+
+  voiceChange($event) {
+    console.log(typeof ($event))
+    console.log($event)
+    console.log($event.target.value)
+    console.log($event.target.options[$event.target.options.selectedIndex].lang)
+
+    this.updateSpeech(
+      $event.target.value,
+      $event.target.options[$event.target.options.selectedIndex].lang
+    )
+
+  }
+
+  updateSpeech(voice: string, lang: string) {
+    this.userLang = lang
+    this.userVocie = voice
+    this.speech.setLanguage(lang)
+    this.speech.setVoice(voice)
+  }
+
+  onSubmit() {
+    this.sayYourNameData = this.sayYourNameFrom.value;
   }
 }
 

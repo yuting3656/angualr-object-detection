@@ -6,7 +6,7 @@
 <div style="text-align:center">
 
     <canvas #predictPaint id="canvas"></canvas>
-    <video #videoFrame id="vid" playsinline></video>
+    <video #videoFrame id="vid" style="border-radius: 50%;" playsinline></video>
 </div>
 
 
@@ -15,8 +15,81 @@
 </div> -->
 
 
+
+
+<h4> 怕處理超載: 玩的時候不要一次拍到太多可偵測的東西　ＸＤ</h4>
+ <h5> <a href="http://cocodataset.org/#explore" target="_blank"> COCODATA SET</a> </h5>
+<img src="https://i.imgur.com/2qSyneB.gif" width="50%">
+
+<form [formGroup]="sayYourNameFrom" (ngSubmit)="onSubmit()">
+    <!-- CAR -->
+    <div>
+        car:
+        <input formControlName="car" type="text">
+    </div>
+    <!-- DOG -->
+    <div>
+        dog:
+        <input formControlName="dog" type="text">
+    </div>
+    <!-- CAT -->
+    <div>
+        cat:
+        <input formControlName="cat" type="text">
+    </div>
+    <!-- CHAIR -->
+    <div>
+        chair:
+        <input formControlName="chair" type="text">
+    </div>
+    <!-- LAPTOP -->
+    <div>
+        laptop:
+        <input formControlName="laptop" type="text">
+    </div>
+    <!-- BOOK -->
+    <div>
+        book:
+        <input formControlName="book" type="text">
+    </div>
+    <!-- PERSON -->
+    <div>
+        person:
+        <input formControlName="person" type="text">
+    </div>
+    <!-- TEDDY BEAR -->
+    <div>
+        teddyBear:
+        <input formControlName="teddyBear" type="text">
+    </div>
+    <!-- CLOCK -->
+    <div>
+        clock:
+        <input formControlName="clock" type="text">
+    </div>
+    <!-- CUP -->
+    <div>
+        cup:
+        <input formControlName="cup" type="text">
+    </div>
+    <!-- TV -->
+    <div>
+        tv:
+        <input formControlName="tv" type="text">
+    </div>
+    <div>
+      <button>確認</button>
+    </div>
+</form>
+
 <div class="clientDeviceInfo">
-    <div *ngIf="safariUser" >
+
+<!-- <div style="height: 20px;"></div> -->
+
+    <select *ngIf="voicesShowingFlag" (change)="voiceChange($event)">
+        <option *ngFor="let voice of voiceData.voices " [value]="voice.name" lang="{{voice.lang}}"> {{voice.name}} / {{voice.lang}} </option>
+     </select>
+    <div *ngIf="safariUser">
         <button (click)="ai_speak()"> SPEAK </button>
     </div>
     <div>
